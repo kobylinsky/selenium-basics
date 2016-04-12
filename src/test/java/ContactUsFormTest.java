@@ -52,4 +52,28 @@ public class ContactUsFormTest extends BaseContactUsTest {
         assertTrue(getValue(XPATH_INPUT_MAIL + XPATH_ALERT_SUFFIX).contains("Invalid email address"));
     }
 
+    @Test
+    public void testSubmitIncorrectTelephone() {
+        // Setting incorrect email
+        setValue(XPATH_INPUT_NAME, "Bogdan");
+        setValue(XPATH_INPUT_MAIL, "correct.email@gl.com");
+        setValue(XPATH_INPUT_TELEPHONE, "INcorrect telephone");
+        setValue(XPATH_INPUT_COUNTRY, "KIEV");
+        setValue(XPATH_INPUT_COMPANY, "GL");
+        setValue(XPATH_INPUT_MESSAGE, "_");
+
+        // Check that success popup is absent
+        assertFalse(isElementPresent(XPATH_SUBMITION_SUCCESS_ALERT));
+        assertFalse(isElementPresent(XPATH_INPUT_TELEPHONE + XPATH_ALERT_SUFFIX));
+
+        // Submit
+        clickSubmit();
+
+        // Success popup is absent
+        assertFalse(isElementPresent(XPATH_SUBMITION_SUCCESS_ALERT));
+        assertTrue(isElementPresent(XPATH_INPUT_TELEPHONE + XPATH_ALERT_SUFFIX));
+        final String errorText = getValue(XPATH_INPUT_TELEPHONE + XPATH_ALERT_SUFFIX);
+        assertTrue("Error: " + errorText, errorText.contains("Invalid phone number"));
+    }
+
 }
