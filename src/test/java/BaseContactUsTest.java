@@ -1,5 +1,5 @@
-import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -50,17 +50,11 @@ public class BaseContactUsTest {
     }
 
     /**
-     * Clear inputs after each test
+     * Refresh browser before each test
      */
-    @After
-    public void clearInputs() {
-        waitForElementToBeVisible(XPATH_INPUT_NAME);
-        clearInput(XPATH_INPUT_NAME);
-        clearInput(XPATH_INPUT_MAIL);
-        clearInput(XPATH_INPUT_TELEPHONE);
-        clearInput(XPATH_INPUT_COUNTRY);
-        clearInput(XPATH_INPUT_COMPANY);
-        clearInput(XPATH_INPUT_MESSAGE);
+    @Before
+    public void refresh() {
+        DRIVER.navigate().refresh();
     }
 
     public void clearInput(String... elementsXPathes) {
