@@ -18,14 +18,15 @@ public class ContactUsFormTest extends BaseContactUsTest {
         setValue(XPATH_INPUT_COMPANY, "GL");
         setValue(XPATH_INPUT_MESSAGE, "_");
 
-        // Check that success popup is absent
+        // Success popup is absent
         assertFalse(isElementPresent(XPATH_SUBMITION_SUCCESS_ALERT));
 
         // Submit
         clickSubmit();
 
-        // Popup appeared
+        // Wait for submission
         waitForElementToBeVisible(XPATH_SUBMITION_SUCCESS_ALERT);
+        // Success popup is present
         assertTrue(isElementPresent(XPATH_SUBMITION_SUCCESS_ALERT));
     }
 
@@ -39,7 +40,7 @@ public class ContactUsFormTest extends BaseContactUsTest {
         setValue(XPATH_INPUT_COMPANY, "GL");
         setValue(XPATH_INPUT_MESSAGE, "_");
 
-        // Check that success popup is absent
+        // Success popup is absent
         assertFalse(isElementPresent(XPATH_SUBMITION_SUCCESS_ALERT));
         assertFalse(isElementPresent(XPATH_INPUT_MAIL + XPATH_ALERT_SUFFIX));
 
@@ -48,6 +49,7 @@ public class ContactUsFormTest extends BaseContactUsTest {
 
         // Success popup is absent
         assertFalse(isElementPresent(XPATH_SUBMITION_SUCCESS_ALERT));
+        // Alert is present
         assertTrue(isElementPresent(XPATH_INPUT_MAIL + XPATH_ALERT_SUFFIX));
 
         final String mailErrorText = getValue(XPATH_INPUT_MAIL + XPATH_ALERT_SUFFIX);
@@ -103,13 +105,13 @@ public class ContactUsFormTest extends BaseContactUsTest {
         // Success popup is absent
         assertFalse(isElementPresent(XPATH_SUBMITION_SUCCESS_ALERT));
         // Alerts are present
-        assertFalse(isElementPresent(XPATH_INPUT_MAIL + XPATH_ALERT_SUFFIX));
-        assertFalse(isElementPresent(XPATH_INPUT_TELEPHONE + XPATH_ALERT_SUFFIX));
+        assertTrue(isElementPresent(XPATH_INPUT_MAIL + XPATH_ALERT_SUFFIX));
+        assertTrue(isElementPresent(XPATH_INPUT_TELEPHONE + XPATH_ALERT_SUFFIX));
 
-        final String mailErrorText = getValue(XPATH_INPUT_TELEPHONE + XPATH_ALERT_SUFFIX);
+        final String mailErrorText = getValue(XPATH_INPUT_MAIL + XPATH_ALERT_SUFFIX);
         assertTrue("Error: " + mailErrorText, mailErrorText.contains("Invalid email address"));
 
-        final String phoneErrorText = getValue(XPATH_INPUT_MAIL + XPATH_ALERT_SUFFIX);
+        final String phoneErrorText = getValue(XPATH_INPUT_TELEPHONE + XPATH_ALERT_SUFFIX);
         assertTrue("Error: " + phoneErrorText, phoneErrorText.contains("Invalid phone number"));
     }
 
