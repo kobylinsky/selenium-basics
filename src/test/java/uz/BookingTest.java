@@ -9,16 +9,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
  * AUT: http://booking.uz.gov.ua/
- *
+ * <p>
  * You have to implement the following Test Case:
  * - Select Departure Station from list
  * - Select Destination Station from list
@@ -26,7 +23,7 @@ import static org.junit.Assert.assertTrue;
  * - Click "Search" button
  * - Verify that table with results are displayed
  * - Verify that table contains necessary train numbers
- *
+ * <p>
  * Test Data:
  * Departure Destination Train
  * 1. Kyiv Ivano-Frankivsk 115 О, 269 К
@@ -70,11 +67,9 @@ public class BookingTest {
     }
 
     private String getCurrentDatePlusMonth() throws ParseException {
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, 1);
-        final Date newDate = new Date(calendar.getTime().getTime());
-        return dateFormat.format(newDate);
+        return new SimpleDateFormat("MM.dd.yyyy").format(new Date(calendar.getTime().getTime()));
     }
 
 }

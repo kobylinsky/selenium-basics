@@ -22,19 +22,19 @@ public class BookingPage {
     private WebDriver webDriver;
 
     @FindBy(id = "station_from")
-    StationField stationFrom;
+    private StationField stationFrom;
 
     @FindBy(id = "station_till")
-    StationField stationTo;
+    private StationField stationTo;
 
     @FindBy(id = "date_dep")
-    WebElement dateDepartion;
+    private WebElement dateDepartion;
 
     @FindBy(name = "search")
-    Button submitButton;
+    private Button submitButton;
 
     @FindBy(xpath = ".//table[@id='ts_res_tbl']//td[@class='num']//a")
-    List<WebElement> trains;
+    private List<WebElement> trains;
 
     public BookingPage(WebDriver webDriver) {
         this.webDriver = webDriver;
@@ -60,17 +60,13 @@ public class BookingPage {
     }
 
     public void setDate(String date) {
-        clearDate();
-        dateDepartion.sendKeys(date);
-    }
-
-    private void clearDate() {
+        // Clear a date field
         if (webDriver instanceof JavascriptExecutor) {
-            ((JavascriptExecutor) webDriver)
-                    .executeScript("document.getElementById('date_dep').setAttribute('value', '')");
+            ((JavascriptExecutor) webDriver).executeScript("document.getElementById('date_dep').setAttribute('value', '')");
         } else {
             throw new RuntimeException("Browser doesn't support JS");
         }
+        dateDepartion.sendKeys(date);
     }
 
     public void openPage() {
