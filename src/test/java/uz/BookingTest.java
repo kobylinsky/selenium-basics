@@ -43,6 +43,11 @@ public class BookingTest {
         bookingPage = new BookingPage(webDriver);
     }
 
+    @Before
+    public void tearDown() {
+        webDriver.close();
+    }
+
     @Test
     public void testKievIvanoFrankivskTrains() throws ParseException {
         // Load page
