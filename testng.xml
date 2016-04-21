@@ -2,6 +2,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 
 <suite name="UZSuite">
+    <parameter name="browser" value="CHROME"/>  <!--  FF  or  CHROME  -->
     <test name="BookingTest">
         <parameter name="url" value="http://booking.uz.gov.ua/en"/>
         <classes>

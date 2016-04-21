@@ -1,11 +1,11 @@
 package uz;
 
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
+import utils.DriverManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +15,6 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 import static utils.DriverManager.Browser;
-import static utils.DriverManager.getWebDriver;
 
 /**
  * AUT: http://booking.uz.gov.ua/
@@ -42,9 +41,9 @@ public class BookingTest {
     private BookingPage bookingPage;
 
     @BeforeMethod
-    @Parameters("url")
-    public void setUp(String url) {
-        webDriver = new FirefoxDriver();
+    @Parameters({"url", "browser"})
+    public void setUp(String url, Browser browser) {
+        webDriver = DriverManager.getWebDriverFor(browser);
         bookingPage = new BookingPage(webDriver, url);
     }
 
