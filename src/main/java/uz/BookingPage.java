@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
  */
 public class BookingPage {
 
-    private static final String URL = "http://booking.uz.gov.ua/en/";
-
     private WebDriver webDriver;
+
+    private String url;
 
     @FindBy(id = "station_from")
     private StationField stationFrom;
@@ -36,8 +36,9 @@ public class BookingPage {
     @FindBy(xpath = ".//table[@id='ts_res_tbl']//td[@class='num']//a")
     private List<WebElement> trains;
 
-    public BookingPage(WebDriver webDriver) {
+    public BookingPage(WebDriver webDriver, String url) {
         this.webDriver = webDriver;
+        this.url = url;
         PageFactory.initElements(new HtmlElementDecorator(new HtmlElementLocatorFactory(webDriver)), this);
         stationFrom.setWebDriver(webDriver);
         stationTo.setWebDriver(webDriver);
@@ -70,7 +71,7 @@ public class BookingPage {
     }
 
     public void openPage() {
-        webDriver.get(URL);
+        webDriver.get(url);
     }
 
     public List<String> getTrainNames() {

@@ -14,5 +14,9 @@ dependencies {
     compile 'org.seleniumhq.selenium:selenium-firefox-driver:2.53.0'
     compile 'ru.yandex.qatools.htmlelements:htmlelements-all:1.15'
     compile 'org.apache.commons:commons-lang3:3.4'
-    testCompile 'junit:junit:4.11'
+
+    compile 'io.github.bonigarcia:webdrivermanager:1.4.2'
+
+    testCompile 'org.testng:testng:6.9.10'
+
 }
