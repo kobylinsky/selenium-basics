@@ -3,6 +3,7 @@ package uz;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import utils.DriverManager;
@@ -41,7 +42,7 @@ public class BookingTest {
     private BookingPage bookingPage;
 
     @BeforeMethod
-    @Parameters({"url", "browser"})
+    @Parameters({ "url", "browser" })
     public void setUp(String url, Browser browser) {
         webDriver = DriverManager.getWebDriverFor(browser);
         bookingPage = new BookingPage(webDriver, url);
@@ -52,14 +53,22 @@ public class BookingTest {
         webDriver.close();
     }
 
-    @Test
-    public void testKievIvanoFrankivskTrains() throws ParseException {
+    @DataProvider(name = "stations")
+    public Object[][] stationsProvider() {
+        return new Object[][] {
+                { "Kyiv", "Ivano-Frankivsk", "143 К" },
+                { "Ivano-Frankivsk", "Kyiv", "143 Л" }
+        };
+    }
+
+    @Test(dataProvider = "stations")
+    public void testTrains(String from, String to, String expectedTrain) throws ParseException {
         // Load page
         bookingPage.openPage();
 
         // Set stations
-        bookingPage.setStationFrom("Kyiv");
-        bookingPage.setStationTo("Ivano-Frankivsk");
+        bookingPage.setStationFrom(from);
+        bookingPage.setStationTo(to);
 
         // Set date
         final String datePlusMonth = getCurrentDatePlusMonth();
@@ -69,10 +78,11 @@ public class BookingTest {
         bookingPage.searchTrains();
 
         // Get list of results
-        List<String> trains = bookingPage.getTrainNames();
+        List<String> actualTrains = bookingPage.getTrainNames();
 
         // Check that train 143 exists
-        assertTrue("Train #143 should be present in the results", trains.contains("143 К"));
+        assertTrue(String.format("Train '%s' should be present in the results: %s", expectedTrain, actualTrains),
+                actualTrains.contains(expectedTrain));
     }
 
     private String getCurrentDatePlusMonth() throws ParseException {
