@@ -8,7 +8,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import ru.yandex.qatools.htmlelements.element.Button;
 import ru.yandex.qatools.htmlelements.loader.decorator.HtmlElementDecorator;
 import ru.yandex.qatools.htmlelements.loader.decorator.HtmlElementLocatorFactory;
 
@@ -34,7 +33,7 @@ public class BookingPage {
     private WebElement dateDepartion;
 
     @FindBy(name = "search")
-    private Button submitButton;
+    private WebElement submitButton;
 
     @FindBy(xpath = ".//table[@id='ts_res_tbl']//td[@class='num']//a")
     private List<WebElement> trains;
@@ -58,6 +57,7 @@ public class BookingPage {
     }
 
     public void searchTrains() {
+        new WebDriverWait(webDriver, 5).until(ExpectedConditions.elementToBeClickable(submitButton));
         submitButton.click();
     }
 
