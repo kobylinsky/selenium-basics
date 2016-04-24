@@ -56,6 +56,22 @@ public class BookingPage {
         stationTo.setValue(station);
     }
 
+    public List<String> getSuggestionsForStationFrom() {
+        return stationFrom.getSuggestions();
+    }
+
+    public List<String> getSuggestionsForStationTo() {
+        return stationTo.getSuggestions();
+    }
+
+    public void setStationToAndChoose(String station) {
+        stationTo.setValueAndChoose(station);
+    }
+
+    public void setStationFromAndChoose(String station) {
+        stationFrom.setValueAndChoose(station);
+    }
+
     public void searchTrains() {
         new WebDriverWait(webDriver, 5).until(ExpectedConditions.elementToBeClickable(submitButton));
         submitButton.click();

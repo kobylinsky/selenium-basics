@@ -1,12 +1,7 @@
 package uz;
 
-import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
-import utils.DriverManager;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -14,7 +9,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.testng.Assert.assertTrue;
-import static utils.DriverManager.Browser;
 
 /**
  * AUT: http://booking.uz.gov.ua/
@@ -35,37 +29,26 @@ import static utils.DriverManager.Browser;
  *
  * @author bogdankobylinsky
  */
-public class BookingTest {
-
-    private WebDriver webDriver;
-    private BookingPage bookingPage;
-
-    @BeforeMethod
-    @Parameters({ "url", "browser" })
-    public void setUp(String url, Browser browser) {
-        webDriver = DriverManager.getWebDriverFor(browser);
-        bookingPage = new BookingPage(webDriver, url);
-    }
-
-    @AfterMethod
-    public void tearDown() {
-        webDriver.close();
-    }
+public class BookingTest extends BaseBookingTest {
 
     @DataProvider(name = "stations")
     public Object[][] stationsProvider() {
-        return new Object[][] { { "Kyiv", "Ivano-Frankivsk", "143 К" }, { "Kyiv", "Nizhyn", "780 К" }, { "Odesa", "Lviv", "108 Ш" },
+        return new Object[][] {
+                { "Kyiv", "Ivano-Frankivsk", "143 К" },
+                { "Kyiv", "Nizhyn", "780 К" },
+                { "Odesa", "Lviv", "108 Ш" },
                 { "Ivano-Frankivsk", "Kyiv", "143 Л" } };
     }
 
     @Test(dataProvider = "stations")
     public void testTrains(String from, String to, String expectedTrain) throws ParseException {
+        System.out.println("Running test in thread #" + Thread.currentThread().getId());
         // Load page
         bookingPage.openPage();
 
         // Set stations
-        bookingPage.setStationFrom(from);
-        bookingPage.setStationTo(to);
+        bookingPage.setStationFromAndChoose(from);
+        bookingPage.setStationToAndChoose(to);
 
         // Set date
         final Calendar calendar = new GregorianCalendar();
@@ -80,8 +63,7 @@ public class BookingTest {
         List<String> actualTrains = bookingPage.getTrainNames();
 
         // Check that train 143 exists
-        assertTrue(actualTrains.contains(expectedTrain),
-                String.format("Train '%s' should be present in the results: %s", expectedTrain, actualTrains));
+        assertTrue(actualTrains.contains(expectedTrain), String.format("Train '%s' should be present in the results: %s", expectedTrain, actualTrains));
     }
 
 }
