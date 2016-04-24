@@ -4,6 +4,7 @@ import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.yandex.qatools.htmlelements.element.HtmlElement;
 
@@ -28,6 +29,7 @@ public class StationField extends HtmlElement {
      * @param stationString station name
      */
     public void setValue(String stationString) {
+        new WebDriverWait(webDriver, 10).until(ExpectedConditions.visibilityOf(input));
         input.sendKeys(stationString);
         chooseSuggestedStation(stationString);
     }
