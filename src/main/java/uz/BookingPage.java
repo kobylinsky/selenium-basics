@@ -5,6 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import ru.yandex.qatools.htmlelements.element.Button;
 import ru.yandex.qatools.htmlelements.loader.decorator.HtmlElementDecorator;
 import ru.yandex.qatools.htmlelements.loader.decorator.HtmlElementLocatorFactory;
@@ -76,5 +78,14 @@ public class BookingPage {
 
     public List<String> getTrainNames() {
         return trains.stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
+    public boolean isTrainsListPresent() {
+        try {
+            new WebDriverWait(webDriver, 10).until(ExpectedConditions.visibilityOfAllElements(trains));
+            return true;
+        } catch (Exception ignored) {
+            return false;
+        }
     }
 }

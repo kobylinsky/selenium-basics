@@ -14,7 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.testng.Assert.assertTrue;
 import static utils.DriverManager.Browser;
 
 /**
@@ -57,6 +57,8 @@ public class BookingTest {
     public Object[][] stationsProvider() {
         return new Object[][] {
                 { "Kyiv", "Ivano-Frankivsk", "143 К" },
+                { "Kyiv", "Nizhyn", "780 К" },
+                { "Odesa", "Lviv", "108 Ш" },
                 { "Ivano-Frankivsk", "Kyiv", "143 Л" }
         };
     }
@@ -77,12 +79,14 @@ public class BookingTest {
         // Search
         bookingPage.searchTrains();
 
+        assertTrue(bookingPage.isTrainsListPresent());
+
         // Get list of results
         List<String> actualTrains = bookingPage.getTrainNames();
 
         // Check that train 143 exists
-        assertTrue(String.format("Train '%s' should be present in the results: %s", expectedTrain, actualTrains),
-                actualTrains.contains(expectedTrain));
+        assertTrue(actualTrains.contains(expectedTrain),
+                String.format("Train '%s' should be present in the results: %s", expectedTrain, actualTrains));
     }
 
     private String getCurrentDatePlusMonth() throws ParseException {
