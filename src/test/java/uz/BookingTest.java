@@ -9,9 +9,8 @@ import org.testng.annotations.Test;
 import utils.DriverManager;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.testng.Assert.assertTrue;
@@ -55,12 +54,8 @@ public class BookingTest {
 
     @DataProvider(name = "stations")
     public Object[][] stationsProvider() {
-        return new Object[][] {
-                { "Kyiv", "Ivano-Frankivsk", "143 К" },
-                { "Kyiv", "Nizhyn", "780 К" },
-                { "Odesa", "Lviv", "108 Ш" },
-                { "Ivano-Frankivsk", "Kyiv", "143 Л" }
-        };
+        return new Object[][] { { "Kyiv", "Ivano-Frankivsk", "143 К" }, { "Kyiv", "Nizhyn", "780 К" }, { "Odesa", "Lviv", "108 Ш" },
+                { "Ivano-Frankivsk", "Kyiv", "143 Л" } };
     }
 
     @Test(dataProvider = "stations")
@@ -73,8 +68,8 @@ public class BookingTest {
         bookingPage.setStationTo(to);
 
         // Set date
-        final String datePlusMonth = getCurrentDatePlusMonth();
-        bookingPage.setDate(datePlusMonth);
+        final Calendar calendar = new GregorianCalendar();
+        bookingPage.setDate(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
 
         // Search
         bookingPage.searchTrains();
@@ -87,12 +82,6 @@ public class BookingTest {
         // Check that train 143 exists
         assertTrue(actualTrains.contains(expectedTrain),
                 String.format("Train '%s' should be present in the results: %s", expectedTrain, actualTrains));
-    }
-
-    private String getCurrentDatePlusMonth() throws ParseException {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, 1);
-        return new SimpleDateFormat("MM.dd.yyyy").format(new Date(calendar.getTime().getTime()));
     }
 
 }

@@ -1,6 +1,7 @@
 package uz;
 
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -38,6 +39,8 @@ public class BookingPage {
     @FindBy(xpath = ".//table[@id='ts_res_tbl']//td[@class='num']//a")
     private List<WebElement> trains;
 
+    private static final String DEPARTURE_DATE_PICK_XPATH = ".//*[@id='ui-datepicker-div']//td[@data-month='%d']//a[text()='%d']";
+
     public BookingPage(WebDriver webDriver, String url) {
         this.webDriver = webDriver;
         this.url = url;
@@ -62,14 +65,19 @@ public class BookingPage {
         return dateDepartion.getAttribute("value");
     }
 
-    public void setDate(String date) {
-        // Clear a date field
-        if (webDriver instanceof JavascriptExecutor) {
-            ((JavascriptExecutor) webDriver).executeScript("document.getElementById('date_dep').setAttribute('value', '')");
-        } else {
-            throw new RuntimeException("Browser doesn't support JS");
-        }
-        dateDepartion.sendKeys(date);
+    public void setDate(int month, int day) {
+        dateDepartion.click();
+        int retry = 0;
+        do {
+            final By byDateLocator = By.xpath(String.format(DEPARTURE_DATE_PICK_XPATH, month, day - retry));
+            try {
+                new WebDriverWait(webDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(byDateLocator));
+                webDriver.findElement(byDateLocator).click();
+                break;
+            } catch (TimeoutException ignored) {
+                retry++;
+            }
+        } while (retry <= 3); // If currently there is Jan31 and we are trying to click on Feb31->Feb30->Feb29->Feb28
     }
 
     public void openPage() {
@@ -84,7 +92,7 @@ public class BookingPage {
         try {
             new WebDriverWait(webDriver, 10).until(ExpectedConditions.visibilityOfAllElements(trains));
             return true;
-        } catch (Exception ignored) {
+        } catch (TimeoutException ignored) {
             return false;
         }
     }
