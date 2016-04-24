@@ -1,7 +1,8 @@
 package uz;
 
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
@@ -33,7 +34,7 @@ public class BaseBookingTest {
     protected WebDriver webDriver;
     protected BookingPage bookingPage;
 
-    @BeforeMethod
+    @BeforeClass
     @Parameters({ "url", "browser" })
     public void setUp(@Optional(value = "http://booking.uz.gov.ua/en") String url,
             @Optional(value = "FF") Browser browser) {
@@ -41,7 +42,12 @@ public class BaseBookingTest {
         bookingPage = new BookingPage(webDriver, url);
     }
 
-    @AfterMethod
+    @BeforeMethod
+    public void refreshPage() {
+        webDriver.navigate().refresh();
+    }
+
+    @AfterClass
     public void tearDown() {
         webDriver.close();
     }

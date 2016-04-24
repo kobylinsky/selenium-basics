@@ -4,6 +4,7 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ThreadGuard;
 
 /**
  * @author bogdankobylinsky
@@ -24,9 +25,9 @@ public class DriverManager {
         final WebDriver driver;
         if (browser == Browser.CHROME) {
             ChromeDriverManager.getInstance().setup();
-            driver = new ChromeDriver();
+            driver = ThreadGuard.protect(new ChromeDriver());
         } else {
-            driver = new FirefoxDriver();
+            driver = ThreadGuard.protect(new FirefoxDriver());
         }
         driver.manage().window().maximize();
         return driver;

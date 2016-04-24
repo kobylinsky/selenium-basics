@@ -16,7 +16,10 @@ public class StationSuggestionsTest extends BaseBookingTest {
 
     @DataProvider(name = "stationNames")
     public Object[][] stationNamesProvider() {
-        return new Object[][] { { "Kyi", Arrays.asList("Kyiv", "Kyivska Rusanivka") }, { "Lv", Arrays.asList("Lviv", "Lvovo", "Lvovskaia") } };
+        return new Object[][] {
+                { "Kyi", Arrays.asList("Kyiv", "Kyivska Rusanivka") },
+                { "Lv", Arrays.asList("Lviv", "Lvovo", "Lvovskaia") }
+        };
     }
 
     @Test(dataProvider = "stationNames")
