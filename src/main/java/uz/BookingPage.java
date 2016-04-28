@@ -1,8 +1,10 @@
 package uz;
 
+import org.joda.time.DateTime;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -13,6 +15,8 @@ import ru.yandex.qatools.htmlelements.loader.decorator.HtmlElementLocatorFactory
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 /**
  * @author bogdankobylinsky
@@ -38,7 +42,7 @@ public class BookingPage {
     @FindBy(xpath = ".//table[@id='ts_res_tbl']//td[@class='num']//a")
     private List<WebElement> trains;
 
-    private static final String DEPARTURE_DATE_PICK_XPATH = ".//*[@id='ui-datepicker-div']//td[@data-month='%d']//a[text()='%d']";
+    private static final String DEPARTURE_DATE_XPATH = ".//*[@id='ui-datepicker-div']//td[@data-month='%d']//a[text()='%d']";
 
     public BookingPage(WebDriver webDriver, String url) {
         this.webDriver = webDriver;
@@ -81,16 +85,16 @@ public class BookingPage {
         return dateDepartion.getAttribute("value");
     }
 
-    public void setDate(int month, int day) {
+    public void setDate(DateTime date) {
         dateDepartion.click();
         int retry = 0;
         do {
-            final By byDateLocator = By.xpath(String.format(DEPARTURE_DATE_PICK_XPATH, month, day - retry));
             try {
-                new WebDriverWait(webDriver, 5).until(ExpectedConditions.visibilityOfElementLocated(byDateLocator));
-                webDriver.findElement(byDateLocator).click();
+                new WebDriverWait(webDriver, 5).until(visibilityOfElementLocated(By.xpath(
+                        String.format(DEPARTURE_DATE_XPATH, date.monthOfYear().get() - 1,
+                                date.dayOfMonth().get() - retry)))).click();
                 break;
-            } catch (TimeoutException ignored) {
+            } catch (WebDriverException ignored) {
                 retry++;
             }
         } while (retry <= 3); // If currently there is Jan31 and we are trying to click on Feb31->Feb30->Feb29->Feb28

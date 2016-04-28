@@ -1,11 +1,10 @@
 package uz;
 
+import org.joda.time.DateTime;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.testng.Assert.assertTrue;
@@ -51,8 +50,7 @@ public class BookingTest extends BaseBookingTest {
         bookingPage.setStationToAndChoose(to);
 
         // Set date
-        final Calendar calendar = new GregorianCalendar();
-        bookingPage.setDate(calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+        bookingPage.setDate(DateTime.now().plusMonths(1));
 
         // Search
         bookingPage.searchTrains();
