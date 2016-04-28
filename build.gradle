@@ -46,9 +46,8 @@ dependencies {
     compile "joda-time:joda-time:${jodaTimeVersion}"
     compile "io.github.bonigarcia:webdrivermanager:${webdrivermanagerVersion}"
 
-    testCompile "org.testng:testng:${testngVersion}"
-
-    testCompile "ru.yandex.qatools.allure:allure-testng-adaptor:${allureVersion}"
+    compile "ru.yandex.qatools.allure:allure-testng-adaptor:${allureVersion}"
+    compile "org.testng:testng:${testngVersion}"
 }
 
 

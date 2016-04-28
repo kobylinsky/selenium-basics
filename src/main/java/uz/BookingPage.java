@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.yandex.qatools.allure.annotations.Step;
 import ru.yandex.qatools.htmlelements.loader.decorator.HtmlElementDecorator;
 import ru.yandex.qatools.htmlelements.loader.decorator.HtmlElementLocatorFactory;
 
@@ -52,38 +53,47 @@ public class BookingPage {
         stationTo.setWebDriver(webDriver);
     }
 
+    @Step
     public void setStationFrom(String station) {
         stationFrom.setValue(station);
     }
 
+    @Step
     public void setStationTo(String station) {
         stationTo.setValue(station);
     }
 
+    @Step
     public List<String> getSuggestionsForStationFrom() {
         return stationFrom.getSuggestions();
     }
 
+    @Step
     public List<String> getSuggestionsForStationTo() {
         return stationTo.getSuggestions();
     }
 
+    @Step
     public void setStationToAndChoose(String stationName) {
         setStationToAndChoose(stationName, stationName);
     }
 
+    @Step
     public void setStationToAndChoose(String firstLettersOfStation, String fullStationName) {
         stationTo.setStation(firstLettersOfStation, fullStationName);
     }
 
+    @Step
     public void setStationFromAndChoose(String stationName) {
         setStationFromAndChoose(stationName, stationName);
     }
 
+    @Step
     public void setStationFromAndChoose(String firstLettersOfStation, String fullStationName) {
         stationFrom.setStation(firstLettersOfStation, fullStationName);
     }
 
+    @Step
     public void searchTrains() {
         new WebDriverWait(webDriver, 5).until(ExpectedConditions.elementToBeClickable(submitButton));
         submitButton.click();
@@ -93,6 +103,7 @@ public class BookingPage {
         return dateDepartion.getAttribute("value");
     }
 
+    @Step
     public void setDate(DateTime date) {
         dateDepartion.click();
         int retry = 0;
@@ -108,10 +119,12 @@ public class BookingPage {
         } while (retry <= 3); // If currently there is Jan31 and we are trying to click on Feb31->Feb30->Feb29->Feb28
     }
 
+    @Step
     public void openPage() {
         webDriver.get(url);
     }
 
+    @Step
     public List<String> getTrainNames() {
         return trains.stream().map(WebElement::getText).collect(Collectors.toList());
     }

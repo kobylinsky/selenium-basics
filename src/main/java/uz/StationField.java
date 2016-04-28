@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import ru.yandex.qatools.allure.annotations.Step;
 import ru.yandex.qatools.htmlelements.element.HtmlElement;
 
 import java.util.List;
@@ -63,11 +64,13 @@ public class StationField extends HtmlElement {
      *
      * @return java.util.List\<String\> that contains suggested stations.
      */
+    @Step
     public List<String> getSuggestions() {
         waitForSuggestions();
         return suggestedStations.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
+    @Step
     public void waitForSuggestions() {
         new WebDriverWait(webDriver, 10).until((Object x) -> {
             return !suggestedStations.isEmpty();
