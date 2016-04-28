@@ -18,6 +18,7 @@ public class StationSuggestionsTest extends BaseBookingTest {
     public Object[][] stationNamesProvider() {
         return new Object[][] {
                 { "Kyi", Arrays.asList("Kyiv", "Kyivska Rusanivka") },
+                { "Lot", Arrays.asList("Lotos", "Lotskyne", "Lotva", "Lotykove") },
                 { "Lv", Arrays.asList("Lviv", "Lvovo", "Lvovskaia") }
         };
     }
