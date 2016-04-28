@@ -68,12 +68,20 @@ public class BookingPage {
         return stationTo.getSuggestions();
     }
 
-    public void setStationToAndChoose(String station) {
-        stationTo.setValueAndChoose(station);
+    public void setStationToAndChoose(String stationName) {
+        setStationToAndChoose(stationName, stationName);
     }
 
-    public void setStationFromAndChoose(String station) {
-        stationFrom.setValueAndChoose(station);
+    public void setStationToAndChoose(String firstLettersOfStation, String fullStationName) {
+        stationTo.setStation(firstLettersOfStation, fullStationName);
+    }
+
+    public void setStationFromAndChoose(String stationName) {
+        setStationFromAndChoose(stationName, stationName);
+    }
+
+    public void setStationFromAndChoose(String firstLettersOfStation, String fullStationName) {
+        stationFrom.setStation(firstLettersOfStation, fullStationName);
     }
 
     public void searchTrains() {

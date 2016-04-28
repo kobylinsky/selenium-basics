@@ -33,10 +33,21 @@ public class BookingTest extends BaseBookingTest {
     @DataProvider(name = "stations")
     public Object[][] stationsProvider() {
         return new Object[][] {
-                { "Kyiv", "Ivano-Frankivsk", "143 К" },
-                { "Kyiv", "Nizhyn", "780 К" },
-                { "Odesa", "Lviv", "108 Ш" },
-                { "Ivano-Frankivsk", "Kyiv", "143 Л" } };
+                { "Kyiv",            "Ivano-Frankivsk", "143 К" },
+                { "Kyiv",            "Nizhyn",          "780 К" },
+                { "Odesa",           "Lviv",            "108 Ш" },
+                { "Ivano-Frankivsk", "Kyiv",            "143 Л" }
+        };
+    }
+
+    @DataProvider(name = "stationsWithPartialName")
+    public Object[][] stationsWithPartialNameProvider() {
+        return new Object[][] {
+                { "Kyi", "Kyiv",              "Ivano", "Ivano-Frankivsk", "143 К" },
+                { "Kyi", "Kyiv",              "Niz", "Nizhyn",            "780 К" },
+                { "Ode", "Odesa",             "Lvi", "Lviv",              "108 Ш" },
+                { "Ivano", "Ivano-Frankivsk", "Kyi", "Kyiv",              "143 Л" }
+        };
     }
 
     @Test(dataProvider = "stations")
@@ -48,6 +59,32 @@ public class BookingTest extends BaseBookingTest {
         // Set stations
         bookingPage.setStationFromAndChoose(from);
         bookingPage.setStationToAndChoose(to);
+
+        // Set date
+        bookingPage.setDate(DateTime.now().plusMonths(1));
+
+        // Search
+        bookingPage.searchTrains();
+
+        assertTrue(bookingPage.isTrainsListPresent());
+
+        // Get list of results
+        List<String> actualTrains = bookingPage.getTrainNames();
+
+        // Check that train 143 exists
+        assertTrue(actualTrains.contains(expectedTrain), String.format("Train '%s' should be present in the results: %s", expectedTrain, actualTrains));
+    }
+
+    @Test(dataProvider = "stationsWithPartialName")
+    public void testTrainsWithPartialName(String fromPartial, String from, String toPartial, String to, String expectedTrain) throws ParseException {
+        System.out.println("Running test in thread #" + Thread.currentThread().getId());
+
+        // Load page
+        bookingPage.openPage();
+
+        // Set stations
+        bookingPage.setStationFromAndChoose(fromPartial, from);
+        bookingPage.setStationToAndChoose(toPartial, to);
 
         // Set date
         bookingPage.setDate(DateTime.now().plusMonths(1));

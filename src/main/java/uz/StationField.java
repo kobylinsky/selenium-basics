@@ -29,9 +29,9 @@ public class StationField extends HtmlElement {
      *
      * @param stationString station name
      */
-    public void setValueAndChoose(String stationString) {
-        setValue(stationString);
-        chooseSuggestedStation(stationString);
+    public void setStation(String firstLettersOfStation, String fullStationName) {
+        setValue(firstLettersOfStation);
+        chooseSuggestedStation(fullStationName);
     }
 
     /**
@@ -51,7 +51,8 @@ public class StationField extends HtmlElement {
      */
     private void chooseSuggestedStation(String stationString) {
         waitForSuggestions();
-        WebElement suggestedStation = suggestedStations.stream().filter(suggestion -> suggestion.getText().equals(stationString)).findFirst().get();
+        WebElement suggestedStation = suggestedStations.stream()
+                .filter(suggestion -> suggestion.getText().equals(stationString)).findFirst().get();
         if (suggestedStation != null) {
             suggestedStation.click();
         }
