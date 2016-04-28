@@ -1,22 +1,63 @@
 group 'com.bkobylinsky'
 version '1.0-SNAPSHOT'
 
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath "ru.d10xa:gradle-allure-plugin:0.5.0"
+    }
+}
+
 apply plugin: 'java'
+apply plugin: 'ru.d10xa.allure'
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    jcenter()
+}
+
+
+configurations {
+    agent
+}
+
+allure {
+    aspectjweaver = true
+    junit = true
+    testNG = false
+    spock = false
+    geb = false
+
+    allureResultsDir = "$buildDir/allure-results"
+    allureReportDir = "$buildDir/allure-report"
 }
 
 dependencies {
-    compile 'org.seleniumhq.selenium:selenium-java:2.53.0'
-    compile 'org.seleniumhq.selenium:selenium-firefox-driver:2.53.0'
-    compile 'ru.yandex.qatools.htmlelements:htmlelements-all:1.15'
-    compile 'org.apache.commons:commons-lang3:3.4'
-    compile 'joda-time:joda-time:2.3'
-    compile 'io.github.bonigarcia:webdrivermanager:1.4.2'
+    agent "org.aspectj:aspectjweaver:${aspectjVersion}"
 
-    testCompile 'org.testng:testng:6.9.10'
+    compile "org.seleniumhq.selenium:selenium-java:${seleniumJavaVersion}"
+    compile "org.seleniumhq.selenium:selenium-firefox-driver:${seleniumDriverVersion}"
+    compile "ru.yandex.qatools.htmlelements:htmlelements-all:${htmlElementsVersion}"
+    compile "org.apache.commons:commons-lang3:${commonsLang3Version}"
+    compile "joda-time:joda-time:${jodaTimeVersion}"
+    compile "io.github.bonigarcia:webdrivermanager:${webdrivermanagerVersion}"
 
+    testCompile "org.testng:testng:${testngVersion}"
+
+    testCompile "ru.yandex.qatools.allure:allure-testng-adaptor:${allureVersion}"
+}
+
+
+test.doFirst {
+    jvmArgs "-javaagent:${configurations.agent.singleFile}"
+}
+
+test {
+    useTestNG() {
+        suiteXmlFiles << new File(rootDir, "testng.xml")
+    }
 }
